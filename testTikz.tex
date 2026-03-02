@@ -1,0 +1,57 @@
+%\documentclass[10pt,twoside,titlepage]{standalone}
+\documentclass{minimal}
+% \documentclass[10pt,titlepage,twoside,twocolumn]{article}
+%
+%%%%% These lines are necessary
+%\usepackage{pgf,pgfarrows,pgfnodes,pgfautomata,pgfheaps,pgfshade}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\pagestyle{empty} % So that the figure can be cropped out to the minimum size
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Set the font you need here. 
+%%%%%%%%%% Uncomment the desired one from 1, 2, or 3 below
+%%%%%%%%%% Options 1 and 2 work with pdflatex. Option 3 works with xelatex
+%%%%%%%%%% 1) Text with AMS math fonts %%%%%%%%%%
+%%%%% Uncomment fontspec and one of the following fonts(or add a new package) and uncomment amsmath 
+\usepackage{palatino}
+%\usepackage{times}
+%%% Math font
+\usepackage{amsmath}
+%%%%%%%%%% 2) Roman text and math font; Used in the IEEE Transactions %%%%%%%%%%
+% \usepackage{newtxtext,newtxmath}
+%%%%%%%%%% 3) Liberation sans narrow; Used for ISSCC submission %%%%%%%%%%
+%%%%%%%%%% This still uses slanted letters for math mode; OK for submission %%%%%%%%%%
+% \usepackage[no-math]{fontspec}
+% \renewcommand\familydefault{\sfdefault} 
+% \usepackage{sansmath}
+% \sansmath
+% \setsansfont{Liberation Sans Narrow}
+% \setmathrm{Liberation Sans Narrow}
+% \setmathsf{Liberation Sans Narrow}
+% \setmathtt{Liberation Sans Narrow}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% These lines are optional and you can change them to add other features.
+\usepackage{siunitx}
+\sisetup{scientific-notation = engineering}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{latexsym}
+\oddsidemargin -0.25in
+\evensidemargin -0.25in
+\topmargin -0.5in
+\textwidth 7in
+\textheight 9.0in
+
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+
+\begin{document}
+
+%\begin{small}
+%\resizebox{\textwidth}{!}{\input{../Jan192220472026.tikz}}
+%\end{small}
+
+\input{../Feb282047302026.tikz}
+\end{document}
