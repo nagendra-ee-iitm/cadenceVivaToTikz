@@ -14,6 +14,7 @@ load(“nkWaveToTikz.il”)
 
 Select the waveforms and run the following in the CIW. All arguments are optional. Arguments can be in any order,
 but must be in the keyword form, i.e. the keyword ?keyName followed by the argument keyName.
+
 nkWaveToTikz(
 ?fileName fileName
 ?plotMode plotMode
