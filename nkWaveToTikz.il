@@ -4,7 +4,8 @@
 Author Nagendra Krishnapura
 Dept. of Electrical Engineering, Indian Institute of Technology Madras, Chennai 600036, India.
 Language SKILL
-Date: 19 January 2026
+Date of first release: 1 December 2023
+Date: 5 March 2026
 Modified
 By
 
@@ -43,7 +44,7 @@ procedure( nkWaveToTikz(\@key
     additionalAxisArgs
 ) ; input arguments
 
-    let( (addPlotLine0 addPlotLine axisFinishLine colonDef color fileName0 fileNameBase fileNameWordList labelcolor legendText lenData nstrips nstripwaves nwaves picFinishLine picStartLine stripheight subwin targetFile texFileName waveAssign0 wave waves win xlabel xlimit xmode xtick xticklabel xyData ylabel ylimit ymode ytick yticklabel labelx labely labeltext
+    let( (addPlotLine0 addPlotLine axisFinishLine colonDef color fileName0 fileNameBase fileNameWordList legendText lenData nstrips nstripwaves nwaves picFinishLine picStartLine stripheight subwin targetFile texFileName waveAssign0 wave waves win xlabel xlimit xmode xtick xticklabel xyData ylabel ylimit ymode ytick yticklabel 
     )
 	if( !fileName
 	    then
@@ -425,24 +426,9 @@ procedure( nkWaveToTikz(\@key
 		then
 		fprintf(targetFile "%s%s%s\n" "\\legend{" legendText "}")
 	    )
-	    
+		; Write the text labels	    
 	    if(textLabels then
-		if(nth(strip textLabels) then 
-		    for(kk 0 
-			(length(nth(strip textLabels)) - 1) 
-			if(nth(2 nth(kk nth(strip textLabels) ) ) then 
-			    (labelx = nth(0 nth(kk nth(strip textLabels) ) )) 
-			    (labely = nth(1 nth(kk nth(strip textLabels) ) )) 
-			    (labeltext = nth(2 nth(kk nth(strip textLabels) ) ))
-			    if(nth(3 nth(kk nth(strip textLabels) ) ) then
-			    	(labelcolor = nth(3 nth(kk nth(strip textLabels) ) ))
-			    	fprintf(targetFile "%s%s%s%L%s%L%s%s%s\n" "\\node[anchor=west, text=" labelcolor "] at (axis cs:" labelx "," labely ") {" labeltext "};" )
-			    	else
-			    	fprintf(targetFile "%s%L%s%L%s%s%s\n" "\\node[anchor=west] at (axis cs:" labelx "," labely ") {" labeltext "};" )			    	
-			    )
-			)
-		    )
-		)
+	    	writeTextLabels(textLabels strip targetFile)
 	    ) 
 	    fprintf(targetFile "%s\n" axisFinishLine)
 	    ; Add vertical separation between strips if specified
@@ -528,6 +514,55 @@ procedure(assignWaveColors(var0 nwaves)
 	) 
 	(var0 = var1)
     )
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Write text labels to plots
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+procedure(writeTextLabels(textLabels strip targetFile)
+    let((labelx labely labeltext labelcolor shiftedx shiftedy labelline)  
+	if(nth(strip textLabels) then ; If textLabels is defined
+		for(kk 0 (length(nth(strip textLabels)) - 1) 
+			if(nth(2 nth(kk nth(strip textLabels) ) ) then ; If label text is given 
+				(labelx = nth(0 nth(kk nth(strip textLabels) ) )) 
+				(labely = nth(1 nth(kk nth(strip textLabels) ) )) 
+				(labeltext = nth(2 nth(kk nth(strip textLabels) ) ))
+				if((length(nth(kk nth(strip textLabels) ) )>=4) then 
+					(labelcolor = nth(3 nth(kk nth(strip textLabels) ) )) 
+				)
+				if((length(nth(kk nth(strip textLabels) ) )>=6) then 
+					(shiftedx = nth(4 nth(kk nth(strip textLabels) ) ))
+					(shiftedy = nth(5 nth(kk nth(strip textLabels) ) ))
+				)
+				if((length(nth(kk nth(strip textLabels) ) )>=7) then 
+					(labelline = nth(6 nth(kk nth(strip textLabels) ) ))
+				)
+				case(length(nth(kk nth(strip textLabels) ) )
+					(3
+						labelcolor = nth(3 nth(kk nth(strip textLabels) ) )
+						fprintf(targetFile "%s%L%s%L%s%s%s\n" "\\node[anchor=west] at (axis cs:" labelx "," labely ") {" labeltext "};" )
+					)
+					(4
+						labelcolor = nth(3 nth(kk nth(strip textLabels) ) )
+						fprintf(targetFile "%s%s%s%L%s%L%s%s%s\n" "\\node[anchor=west, text=" labelcolor "] at (axis cs:" labelx "," labely ") {" labeltext "};" )
+					)
+					(6
+						labelcolor = nth(3 nth(kk nth(strip textLabels) ) )
+						fprintf(targetFile "%s%s%s%L%s%L%s%s%s\n" "\\node[anchor=west, text=" labelcolor "] at (axis cs:" shiftedx "," shiftedy ") {" labeltext "};" )
+						fprintf(targetFile "%s%s%s%L%s%L%s\n" "\\addplot [only marks, mark=*, mark size=2.5pt," labelcolor "] coordinates {(" labelx "," labely ")};")
+					)
+					(7
+						if((labelline==1) then
+							fprintf(targetFile "%s%s%s%L%s%L%s%s%s\n" "\\node[anchor=west, text=" labelcolor "] (markerlabel) at (axis cs:" shiftedx "," shiftedy ") {" labeltext "};" )
+							fprintf(targetFile "%s%s%s%L%s%L%s\n" "\\addplot [only marks, mark=*, mark size=2.5pt," labelcolor "] coordinates {(" labelx "," labely ")};")
+							fprintf(targetFile "%s%L%s%L%s\n" "\\draw[->] (markerlabel.west) -- (axis cs:" labelx "," labely ");")
+						)
+					)
+				)
+			)
+		)
+	)
+)
 )
 
 /************************************************************************/
